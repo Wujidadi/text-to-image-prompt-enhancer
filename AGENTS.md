@@ -29,6 +29,7 @@ this file only records what matters for development and maintenance.
 - `enhancers/`: the bundled presets, one file per preset, each being the complete system instruction.\
   `z-image` is the default.
 - `config.example.toml`: annotated example of every provider type.
+- `CHANGELOG.md`: release history in Keep a Changelog format, the only document in this repository that records history.
 - `tests/`: pytest;\
   `conftest.py` provides `FakeProvider` and the `isolated_config` fixture, which points the user config at an empty temp directory so tests never read the developer's real config or presets.
 
@@ -43,10 +44,40 @@ uv run prompt-enhancer -q "a fox in snow"      # real call against local ollama
 
 - Provider request shapes are tested by monkeypatching `Provider._post_json`;\
   network calls are never made in tests.
-- After a behavior change, update `README.md` in sync and bump `version` in `pyproject.toml` and `__init__.py`;\
-  consumers pin a release tag (`vX.Y.Z`), so tag releases.
+- There is no CI, but the suite must pass before every commit:\
+  run `uv run pytest` and never commit on red.
+- Tests live in `tests/test_<module>.py`, one file per source module;\
+  add or extend tests for any change that alters observable behavior (new preset, provider, config key, post-processing rule, CLI flag).\
+  A change that does not affect coverage, such as a docstring or a comment, does not require a test, but prefer adding one whenever a cheap assertion exists.
+- The real-call examples above (`prompt-enhancer -q ...` against local ollama) are manual checks and not part of the suite.
 - To test a consumer such as `dtgen` against this checkout before a tag exists:\
   `uv run --no-project --with <this directory> python <script> ...`.
+
+## Releases
+
+- Version numbers follow `x.y.z`:
+  - bump `z` for the usual change, including new presets, providers and options;
+  - bump `y` for a breaking change to the public API, the config schema or a preset name;
+  - bumping `x` (in particular `0` to `1`) is decided explicitly by the maintainer, never by an agent.
+- `version` in `pyproject.toml` and `__version__` in `src/prompt_enhancer/__init__.py` must match;\
+  `tests/test_version.py` fails when they drift.
+- `CHANGELOG.md` follows Keep a Changelog;\
+  every behavior change adds a line under `[Unreleased]` in the same commit.
+- Release steps, in order:
+  1. finish and commit all code changes, with `README.md` updated in sync and the suite green;
+  2. bump the two version numbers, rename `[Unreleased]` in `CHANGELOG.md` to the new version with the release date and update the comparison links, and commit these release-only changes as `chore: release vX.Y.Z`;
+  3. create an annotated tag `vX.Y.Z` whose message briefly lists the changes since the previous tag, mirroring the changelog entry;
+  4. push the branch and the tag only when the maintainer asks.
+- Consumers pin a release tag, so after a release tell the maintainer which consumers must move their pin and which changelog entries are breaking for them.\
+  The known consumer is `dtgen` (`~/Documents/Workspaces/AI/Draw Things/custom/dtgen`), a PEP 723 script whose inline `dependencies` pins `text-to-image-prompt-enhancer @ git+https://github.com/Wujidadi/text-to-image-prompt-enhancer@vX.Y.Z`;\
+  moving the pin means editing that line, with no lock file to regenerate.
+- The surface `dtgen` depends on, all imported from the `prompt_enhancer` top level, and therefore breaking when changed:
+  - `DEFAULT_PRESET`;
+  - `Enhancer.from_config(provider, overrides, language=...)` with the positional `provider` and `overrides` and the keyword `language`;
+  - `Enhancer.enhance(text, preset=..., instruction=...)`, including `preset=None` for custom-instruction mode;
+  - `enhancer.provider.describe()`;
+  - `PromptEnhancerError` as the base class of every error raised by `from_config()` and `enhance()`;
+  - the language set `en` and `zh`, which `dtgen` hard-codes as CLI choices.
 
 ## Conventions
 
