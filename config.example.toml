@@ -1,0 +1,42 @@
+# Copy to ~/.config/prompt-enhancer/config.toml (or point $PROMPT_ENHANCER_CONFIG at it).
+# Without a config file, the built-in "ollama" profile below applies.
+
+# Profile used when the caller does not name one
+default_provider = "ollama"
+
+# Default output language: "en" or "zh" (Simplified Chinese)
+language = "en"
+
+# Extra preset directories searched before ~/.config/prompt-enhancer/enhancers/
+# and the bundled presets
+preset_dirs = []
+
+# Every profile needs "type"; the other keys depend on the type.
+# Common keys: model, url, timeout (seconds, default 300),
+#              api_key_env (name of the environment variable holding the key),
+#              extra (table merged verbatim into the request body)
+
+[providers.ollama]
+type = "ollama"
+url = "http://localhost:11434"
+model = "qwen3.5:4b"
+# think = false
+
+[providers.lmstudio]
+type = "openai"
+url = "http://localhost:1234/v1"
+model = "qwen3.5-7b"
+
+[providers.openrouter]
+type = "openai"
+url = "https://openrouter.ai/api/v1"
+model = "deepseek/deepseek-chat"
+api_key_env = "OPENROUTER_API_KEY"
+
+[providers.claude]
+type = "anthropic"
+model = "claude-sonnet-5"
+api_key_env = "ANTHROPIC_API_KEY"
+# max_tokens = 4096
+# [providers.claude.extra]
+# output_config = { effort = "low" }
