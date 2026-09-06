@@ -36,7 +36,8 @@ def build_parser():
                         help="provider profile from the config file "
                              "(default: default_provider, else ollama)")
     parser.add_argument("--type", metavar="<type>",
-                        help="override the provider type (ollama, openai, anthropic)")
+                        help="override the provider type "
+                             "(ollama, openai, wavespeed, anthropic)")
     parser.add_argument("--model", "-m", metavar="<name>",
                         help="override the provider's model")
     parser.add_argument("--url", metavar="<url>",

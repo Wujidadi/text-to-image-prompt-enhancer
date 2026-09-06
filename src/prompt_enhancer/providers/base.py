@@ -17,6 +17,7 @@ class Provider:
     type_name = ""
     default_url = ""
     default_model = ""
+    default_api_key_env = ""
 
     def __init__(self, settings):
         self.settings = settings
@@ -32,7 +33,7 @@ class Provider:
     def api_key(self):
         if "api_key" in self.settings:
             return self.settings["api_key"]
-        env = self.settings.get("api_key_env")
+        env = self.settings.get("api_key_env") or self.default_api_key_env
         if env:
             value = os.environ.get(env)
             if not value:

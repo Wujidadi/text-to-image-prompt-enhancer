@@ -33,6 +33,13 @@ url = "https://openrouter.ai/api/v1"
 model = "deepseek/deepseek-chat"
 api_key_env = "OPENROUTER_API_KEY"
 
+# WaveSpeed LLM API (https://llm.wavespeed.ai/v1), same key as WaveSpeed image generation;
+# model ids carry the vendor prefix
+[providers.wavespeed]
+type = "wavespeed"
+model = "deepseek/deepseek-v4-flash"
+# api_key_env = "WAVESPEED_API_KEY"
+
 [providers.claude]
 type = "anthropic"
 model = "claude-sonnet-5"

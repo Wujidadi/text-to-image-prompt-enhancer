@@ -24,8 +24,9 @@ this file only records what matters for development and maintenance.
   provider profiles under `[providers.<name>]`, `default_provider`, `language`, `preset_dirs`.\
   The built-in `ollama` profile (`http://localhost:11434`, `qwen3.5:4b`) always exists.
 - `providers/`: one class per backend type, all raw HTTP via `urllib` (no SDKs, to keep the package dependency-free).\
-  `ollama` (`/api/chat`, thinking disabled by default: 4B-scale thinking was measured slower and no better for this task), `openai` (Chat Completions, covers LM Studio, llama.cpp, vLLM, OpenRouter and similar hosts), `anthropic` (Messages API, default model `claude-sonnet-5`, chosen over Opus 5 because the measured quality gain did not justify the cost).\
-  Add a backend by subclassing `Provider` and registering it in `PROVIDER_TYPES`.
+  `ollama` (`/api/chat`, thinking disabled by default: 4B-scale thinking was measured slower and no better for this task), `openai` (Chat Completions, covers LM Studio, llama.cpp, vLLM, OpenRouter and similar hosts), `wavespeed` (the same Chat Completions request against `llm.wavespeed.ai`, keyed by `$WAVESPEED_API_KEY` by default, the route the maintainer actually pays for), `anthropic` (Messages API, default model `claude-sonnet-5`, chosen over Opus 5 because the measured quality gain did not justify the cost).\
+  Add a backend by subclassing `Provider` and registering it in `PROVIDER_TYPES`;\
+  `default_api_key_env` on the class names the environment variable consulted when the profile sets neither `api_key` nor `api_key_env`.
 - `enhancers/`: the bundled presets, one file per preset, each being the complete system instruction.\
   `z-image` is the default.
 - `config.example.toml`: annotated example of every provider type.

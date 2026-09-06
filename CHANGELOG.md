@@ -7,6 +7,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
+- Provider type `wavespeed` for the WaveSpeed LLM API (`https://llm.wavespeed.ai/v1`, Chat Completions), reading the key from `$WAVESPEED_API_KEY` unless the profile says otherwise.
+- `Provider.default_api_key_env`, the per-type fallback environment variable for the API key.
 - `tests/test_version.py`, asserting that `__version__` matches `pyproject.toml`.
 - `CHANGELOG.md` and the testing and release process in `AGENTS.md`.
 

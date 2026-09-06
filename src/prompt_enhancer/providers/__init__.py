@@ -3,10 +3,12 @@ from .anthropic import AnthropicProvider
 from .base import Provider
 from .ollama import OllamaProvider
 from .openai_compatible import OpenAICompatibleProvider
+from .wavespeed import WaveSpeedProvider
 
 PROVIDER_TYPES = {
     OllamaProvider.type_name: OllamaProvider,
     OpenAICompatibleProvider.type_name: OpenAICompatibleProvider,
+    WaveSpeedProvider.type_name: WaveSpeedProvider,
     AnthropicProvider.type_name: AnthropicProvider,
 }
 
@@ -21,4 +23,5 @@ def create_provider(settings):
 
 
 __all__ = ["Provider", "PROVIDER_TYPES", "create_provider",
-           "OllamaProvider", "OpenAICompatibleProvider", "AnthropicProvider"]
+           "OllamaProvider", "OpenAICompatibleProvider", "WaveSpeedProvider",
+           "AnthropicProvider"]

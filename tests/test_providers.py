@@ -1,6 +1,6 @@
 import pytest
 
-from prompt_enhancer import ProviderError
+from prompt_enhancer import ConfigError, ProviderError
 from prompt_enhancer.providers import create_provider
 
 
@@ -34,6 +34,25 @@ def test_openai(monkeypatch):
     assert url == "https://h/v1/chat/completions"
     assert headers["Authorization"] == "Bearer k"
     assert payload["temperature"] == 0.2
+
+
+def test_wavespeed(monkeypatch):
+    monkeypatch.setenv("WAVESPEED_API_KEY", "ws")
+    p = create_provider({"type": "wavespeed"})
+    calls = capture(monkeypatch, p, {"choices": [{"message": {"content": "out"}}]})
+    assert p.complete("S", "U") == "out"
+    url, payload, headers = calls[0]
+    assert url == "https://llm.wavespeed.ai/v1/chat/completions"
+    assert headers["Authorization"] == "Bearer ws"
+    assert payload["model"] == "deepseek/deepseek-v4-flash"
+
+
+def test_wavespeed_key_env_override(monkeypatch):
+    monkeypatch.delenv("WAVESPEED_API_KEY", raising=False)
+    monkeypatch.setenv("OTHER_KEY", "o")
+    assert create_provider({"type": "wavespeed", "api_key_env": "OTHER_KEY"}).api_key == "o"
+    with pytest.raises(ConfigError, match="WAVESPEED_API_KEY"):
+        create_provider({"type": "wavespeed"}).api_key
 
 
 def test_anthropic(monkeypatch):

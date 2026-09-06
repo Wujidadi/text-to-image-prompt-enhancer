@@ -111,17 +111,22 @@ url = "https://openrouter.ai/api/v1"
 model = "deepseek/deepseek-chat"
 api_key_env = "OPENROUTER_API_KEY"
 
+[providers.wavespeed]
+type = "wavespeed"
+model = "deepseek/deepseek-v4-flash"
+
 [providers.claude]
 type = "anthropic"
 model = "claude-sonnet-5"
 api_key_env = "ANTHROPIC_API_KEY"
 ```
 
-| Type        | Endpoint                      | Default `url`               | Notes                                     |
-| ----------- | ----------------------------- | --------------------------- | ----------------------------------------- |
-| `ollama`    | `POST {url}/api/chat`         | `http://localhost:11434`    | `think` (default `false`)                 |
-| `openai`    | `POST {url}/chat/completions` | `https://api.openai.com/v1` | LM Studio, llama.cpp, vLLM, OpenRouter... |
-| `anthropic` | `POST {url}/v1/messages`      | `https://api.anthropic.com` | `max_tokens` (default 4096)               |
+| Type        | Endpoint                      | Default `url`                  | Notes                                                     |
+| ----------- | ----------------------------- | ------------------------------ | --------------------------------------------------------- |
+| `ollama`    | `POST {url}/api/chat`         | `http://localhost:11434`       | `think` (default `false`)                                 |
+| `openai`    | `POST {url}/chat/completions` | `https://api.openai.com/v1`    | LM Studio, llama.cpp, vLLM, OpenRouter...                 |
+| `wavespeed` | `POST {url}/chat/completions` | `https://llm.wavespeed.ai/v1`  | key from `$WAVESPEED_API_KEY` unless `api_key_env` is set |
+| `anthropic` | `POST {url}/v1/messages`      | `https://api.anthropic.com`    | `max_tokens` (default 4096)                               |
 
 Keys common to every profile:
 
