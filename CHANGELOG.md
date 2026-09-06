@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-06
+
 ### Added
 
 - Provider type `wavespeed` for the WaveSpeed LLM API (`https://llm.wavespeed.ai/v1`, Chat Completions), reading the key from `$WAVESPEED_API_KEY` unless the profile says otherwise.
@@ -22,5 +24,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - User config at `~/.config/prompt-enhancer/config.toml` with provider profiles, default language and extra preset directories.
 - Deterministic Traditional-to-Simplified post-processing for `zh` output.
 
-[Unreleased]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/releases/tag/v0.1.0

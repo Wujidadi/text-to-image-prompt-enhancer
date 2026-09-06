@@ -7,7 +7,7 @@ from .presets import DEFAULT_PRESET, Preset, list_presets, load_preset
 from .prompt import CUSTOM_RULE, DEFAULT_LANGUAGE, LANGUAGE_DIRECTIVES, build_system
 from .providers import Provider, create_provider
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 
 class Enhancer:
