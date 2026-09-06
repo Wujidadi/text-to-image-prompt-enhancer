@@ -33,3 +33,6 @@ $RECYCLE.BIN/
 *.webp
 *.mov
 *.mp4
+
+# Local prompt-enhancer config (symlinked from ~/.config/prompt-enhancer/)
+config.toml

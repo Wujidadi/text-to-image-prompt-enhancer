@@ -1,7 +1,7 @@
 # Text-to-image Prompt Enhancer
 
 LLM-driven prompt enhancement for text-to-image and video generation models.\
-Ships 13 enhancement presets (general, model-format and style), talks to a local ollama by default, and can be pointed at any OpenAI-compatible or Anthropic endpoint.\
+Ships 13 enhancement presets (general, model-format and style), talks to a local ollama by default, and can be pointed at ollama cloud, the WaveSpeed LLM API, or any OpenAI-compatible or Anthropic endpoint.\
 Usable as a Python library or as the `prompt-enhancer` command.\
 Zero runtime dependencies, Python 3.11+.
 
@@ -10,6 +10,9 @@ Zero runtime dependencies, Python 3.11+.
 ```sh
 # As a command-line tool
 uv tool install git+https://github.com/Wujidadi/text-to-image-prompt-enhancer
+
+# As a command-line tool from a checkout, tracking the working tree without reinstalling
+uv tool install --editable .
 
 # As a dependency of a script (PEP 723 inline metadata)
 # /// script
@@ -36,6 +39,17 @@ prompt-enhancer -p ernie -l zh "一隻橘貓在窗台上睡覺"    # Simplified 
 echo "a fox in snow" | prompt-enhancer -P claude         # provider profile, stdin
 prompt-enhancer --list-presets
 prompt-enhancer --list-providers
+```
+
+Choosing the model, with the profiles from the [configuration](#configuration) example below:
+
+```sh
+prompt-enhancer -P gemma4 "a fox in snow"                                  # another local ollama model, by profile
+prompt-enhancer -m qwen3.6:35b "a fox in snow"                             # or by model name on the default profile
+prompt-enhancer -P ollama-cloud "a fox in snow"                            # ollama cloud through the signed-in local server
+prompt-enhancer -P ollama-cloud -m gpt-oss:20b-cloud "a fox in snow"       # any tag ending in -cloud
+prompt-enhancer -P wavespeed "a fox in snow"                               # WaveSpeed LLM API
+prompt-enhancer -P wavespeed -m google/gemini-2.5-flash "a fox in snow"
 ```
 
 | Option                       | Description                                                           |
@@ -95,6 +109,14 @@ Interactive review loops belong to the caller: the library is single-pass.
 The config file is `~/.config/prompt-enhancer/config.toml`, or the file named by `$PROMPT_ENHANCER_CONFIG`; see [config.example.toml](config.example.toml).\
 The file is optional.
 
+A convenient way to keep the local config next to a checkout, where `config.toml` is git-ignored:
+
+```sh
+cp config.example.toml config.toml
+mkdir -p ~/.config/prompt-enhancer
+ln -s "$PWD/config.toml" ~/.config/prompt-enhancer/config.toml
+```
+
 ```toml
 default_provider = "ollama"
 language = "en"
@@ -104,6 +126,14 @@ preset_dirs = []
 type = "ollama"
 url = "http://localhost:11434"
 model = "qwen3.5:4b"
+
+[providers.gemma4]
+type = "ollama"
+model = "gemma4:26b"
+
+[providers.ollama-cloud]        # needs "ollama signin"; -cloud tags run on ollama.com
+type = "ollama"
+model = "gpt-oss:120b-cloud"
 
 [providers.openrouter]
 type = "openai"

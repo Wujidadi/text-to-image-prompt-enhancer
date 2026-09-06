@@ -22,6 +22,11 @@ url = "http://localhost:11434"
 model = "qwen3.5:4b"
 # think = false
 
+# ollama cloud through the local server: run "ollama signin" once, then any tag ending in -cloud
+[providers.ollama-cloud]
+type = "ollama"
+model = "gpt-oss:120b-cloud"
+
 [providers.lmstudio]
 type = "openai"
 url = "http://localhost:1234/v1"
