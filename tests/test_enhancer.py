@@ -29,7 +29,7 @@ def test_fixed_language_ignores_zh(isolated_config, fake):
     provider = fake("一隻橘貓")
     result = Enhancer(provider).enhance("x", preset="anima", language="zh")
     assert result == "一隻橘貓"
-    assert not provider.calls[0][0].startswith(LANGUAGE_DIRECTIVES["zh"])
+    assert LANGUAGE_DIRECTIVES["zh"] not in provider.calls[0][0]
 
 
 def test_empty_reply(isolated_config, fake):

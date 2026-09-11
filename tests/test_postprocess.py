@@ -5,6 +5,11 @@ def test_strip_fence_and_quotes():
     assert clean_output('```text\n"a cat"\n```') == "a cat"
 
 
+def test_strip_unclosed_fence():
+    assert clean_output("```markdown\na cat") == "a cat"
+    assert clean_output("a cat\n```") == "a cat"
+
+
 def test_markers_only_in_custom_mode():
     raw = "Original: x\n\n**Enhanced Prompt:** a cat with a hat"
     assert clean_output(raw, strip_markers=True) == "a cat with a hat"

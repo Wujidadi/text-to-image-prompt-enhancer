@@ -36,12 +36,16 @@ def build_system(rule, fixed_language, language, instruction=None):
 
     The language directive must lead: appended after a long rule it loses
     to the model's input-script copying (measured with qwen3.5:4b on
-    Traditional Chinese input)"""
+    Traditional Chinese input). It is repeated at the end because a leading
+    directive alone loses to a long English rule on English input (measured
+    with Qwen3.6 35B-A3B, `ernie` preset, `zh`)"""
     if language not in LANGUAGE_DIRECTIVES:
         raise ValueError(f"unknown language: {language}")
-    system = "" if fixed_language else LANGUAGE_DIRECTIVES[language] + "\n\n"
-    system += rule
+    directive = "" if fixed_language else LANGUAGE_DIRECTIVES[language]
+    system = directive + "\n\n" + rule if directive else rule
     if instruction:
         system += ("\n\nCustom instruction (takes precedence over the rules "
                    f"above): {instruction}")
+    if directive:
+        system += "\n\n" + directive
     return system

@@ -5,6 +5,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-09-11
+
+### Fixed
+
+- The language directive is repeated at the end of the system instruction, so a long English preset on English input no longer drowns out `zh` (Qwen3.6 35B-A3B with `ernie` answered in English every time).
+- A code fence that the model opens but never closes, or closes without opening, is stripped from the output.
+
 ## [0.2.1] - 2026-09-11
 
 ### Added
@@ -30,7 +37,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - User config at `~/.config/prompt-enhancer/config.toml` with provider profiles, default language and extra preset directories.
 - Deterministic Traditional-to-Simplified post-processing for `zh` output.
 
-[Unreleased]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Wujidadi/text-to-image-prompt-enhancer/releases/tag/v0.1.0

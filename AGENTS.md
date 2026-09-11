@@ -17,6 +17,7 @@ this file only records what matters for development and maintenance.
 - `prompt.py`: language directives, the custom-instruction rule and `build_system()`.\
   The language directive must lead the system instruction:\
   appended after a long rule it loses to the model's input-script copying (measured with qwen3.5:4b on Traditional Chinese input).\
+  It is also repeated at the end, because a leading directive alone loses to a long English rule on English input (measured with Qwen3.6 35B-A3B, `ernie`, `zh`).\
   A preset whose first line is `# prompt-enhancer:fixed-language` gets no directive and ignores the language selection (`anima`, `ltx-video`).
 - `postprocess.py`: `clean_output()` (code fences, wrapping quotes, "Enhanced Prompt:"-style markers in custom mode) and `to_simplified()`, a deterministic char-level Traditional-to-Simplified pass over `data/t2s.txt` (distilled from OpenCC, Apache 2.0, attribution kept in the file header).\
   `zh` deliberately means Simplified Chinese because Chinese-capable image models are trained mostly on Simplified corpora, and small models ignore the directive on long Traditional input.

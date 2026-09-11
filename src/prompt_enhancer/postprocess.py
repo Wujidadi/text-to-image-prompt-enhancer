@@ -32,6 +32,8 @@ def clean_output(text, strip_markers=False):
     fenced = re.search(r"```[^\n]*\n(.*?)```", text, re.DOTALL)
     if fenced:
         text = fenced.group(1).strip()
+    else:
+        text = re.sub(r"^```[^\n]*\n|\n?```$", "", text).strip()
     if strip_markers:
         best, best_len = -1, 0
         for marker in ENHANCE_MARKERS:
