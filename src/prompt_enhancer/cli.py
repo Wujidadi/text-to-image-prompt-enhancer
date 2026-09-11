@@ -12,6 +12,22 @@ def die(message):
     sys.exit(1)
 
 
+def is_comment_line(line):
+    stripped = line.lstrip()
+    return (stripped == "#"
+            or stripped.startswith("# ")
+            or stripped.startswith("//"))
+
+
+def read_prompt_file(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except OSError as e:
+        die(f"cannot read prompt file: {e}")
+    return "\n".join(l for l in lines if not is_comment_line(l))
+
+
 def build_parser():
     parser = argparse.ArgumentParser(
         prog=PROG,
@@ -19,6 +35,10 @@ def build_parser():
                     "The prompt is read from the argument, or from stdin "
                     "when omitted; the enhanced prompt is printed to stdout.")
     parser.add_argument("text", nargs="?", help="prompt text (default: stdin)")
+    parser.add_argument("--file", "-f", metavar="<file>",
+                        help="read the prompt from a UTF-8 file instead; lines "
+                             'that are "#" alone or start with "# " or "//" '
+                             "(after indentation) are comments and dropped")
     parser.add_argument("--preset", "-p", metavar="<name>",
                         help="enhancer preset: a name (subdirectories allowed) "
                              "searched under --preset-dir, the user directory "
@@ -61,6 +81,8 @@ def build_parser():
 
 def main(argv=None):
     args = build_parser().parse_args(argv)
+    if args.file is not None and args.text is not None:
+        die("give the prompt as text or --file, not both")
     try:
         if args.list_presets:
             config = load_config(args.config)
@@ -83,7 +105,12 @@ def main(argv=None):
                                         language=args.language,
                                         preset_dirs=args.preset_dir,
                                         config_path=args.config)
-        text = args.text if args.text is not None else sys.stdin.read()
+        if args.file is not None:
+            text = read_prompt_file(args.file)
+        elif args.text is not None:
+            text = args.text
+        else:
+            text = sys.stdin.read()
         text = text.strip()
         if not text:
             die("empty prompt")

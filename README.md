@@ -37,6 +37,7 @@ prompt-enhancer -p ghibli-watercolor "a fox in snow"     # named preset
 prompt-enhancer -i "add a straw hat" "a fox in snow"     # custom-instruction mode
 prompt-enhancer -p ernie -l zh "一隻橘貓在窗台上睡覺"    # Simplified Chinese output
 echo "a fox in snow" | prompt-enhancer -P claude         # provider profile, stdin
+prompt-enhancer -f prompts/fox.txt                       # prompt file, comment lines dropped
 prompt-enhancer --list-presets
 prompt-enhancer --list-providers
 ```
@@ -55,6 +56,7 @@ prompt-enhancer -P wavespeed -m google/gemini-2.5-flash "a fox in snow"
 | Option                       | Description                                                           |
 | ---------------------------- | --------------------------------------------------------------------- |
 | `text`                       | Prompt text; read from stdin when omitted                             |
+| `--file`, `-f`               | Read the prompt from a UTF-8 file instead, dropping comment lines     |
 | `--preset`, `-p`             | Preset name (subdirectories allowed) or plain path; default `z-image` |
 | `--instruction`, `-i`        | Ad-hoc instruction; appended to the preset, or custom mode when alone |
 | `--language`, `-l`           | Output language `en` (default) or `zh` (Simplified Chinese)           |
@@ -66,6 +68,9 @@ prompt-enhancer -P wavespeed -m google/gemini-2.5-flash "a fox in snow"
 | `--quiet`, `-q`              | Suppress the progress line on stderr                                  |
 | `--list-presets`             | List visible presets with their source path                           |
 | `--list-providers`           | List provider profiles (`*` marks the default)                        |
+
+In a prompt file, a line that is `#` alone, or starts with `# ` or `//` after any indentation, is a comment and never reaches the model;\
+`#hashtag` is kept as prompt text, since tags are part of some prompts.
 
 The enhanced prompt goes to stdout; everything else goes to stderr.\
 Exit status is 1 on any failure.
